@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { auth } from '@clerk/nextjs'
-import Typewriter from './components/typewriter'
+import { Typewriter } from '@/components'
 
 export default async function Home() {
   const { userId } = await auth()

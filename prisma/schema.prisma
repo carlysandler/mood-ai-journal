@@ -13,7 +13,7 @@ datasource db {
 
 model User {
   // for security reasons using unique string,
-  id        String         @id @default(uuid()) 
+  id        String         @id @default(uuid())
   createdAt DateTime       @default(now())
   updatedAt DateTime       @updatedAt // automatically update timestamp,
   clerkId   String         @unique
@@ -23,6 +23,7 @@ model User {
 
 model JournalEntry {
   id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId    String
   // the userID field on the JournalEntry is going to reference the id field on the user model
@@ -36,6 +37,7 @@ model JournalEntry {
 
 model Analysis {
   id        String       @id @default(uuid())
+  createdAt DateTime @default(now())
   updatedAt DateTime     @updatedAt
   userId    String
   entryId   String
