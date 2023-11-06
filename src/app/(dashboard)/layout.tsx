@@ -8,11 +8,11 @@ interface DashboardLayoutProps {
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
     <div className="h-screen w-screen relative">
-      <aside className="absolute w-[200px] top-0 left-0 h-full border-r border-black/10">
+      <aside className="absolute w-[200px] top-0 left-0 h-full border-r border-theme">
         Mood
       </aside>
       <div className="ml-[200px]">
-        <header className="h-[60px] border-b border-black/10">
+        <header className="h-[60px] border-b border-theme">
           <div className="h-full w-full px-6 flex items-center justify-end">
             <UserButton />
           </div>
