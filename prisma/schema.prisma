@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  // for security reasons using unique string,
+  id        String         @id @default(uuid()) 
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt // automatically update timestamp,
+  clerkId   String         @unique
+  email     String         @unique
+  entries   JournalEntry[]
+}
+
+model JournalEntry {
+  id        String   @id @default(uuid())
+  updatedAt DateTime @updatedAt
+  userId    String
+  // the userID field on the JournalEntry is going to reference the id field on the user model
+  user      User     @relation(fields: [userId], references: [id])
+
+  content  String    @db.Text // i want my string to be long
+  analysis Analysis?
+
+  @@index([userId])
+}
+
+model Analysis {
+  id        String       @id @default(uuid())
+  updatedAt DateTime     @updatedAt
+  userId    String
+  entryId   String
+  entry     JournalEntry @relation(fields: [entryId], references: [id])
+  mood      String
+  summary   String       @db.Text
+  color     String
+  negative  Boolean
+
+  @@unique([entryId]) // we cant query w/out a unique index
+}
+
+//mysql is a fixed-width col db => its going to hit a limit on how long the string can so we use @db.Text to change the type to real text in db not fixed char
+// fields: [self-reference ], references: [what field on the reference model]
