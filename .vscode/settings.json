@@ -52,7 +52,7 @@
   "prettier.semi": false,
   "prettier.singleQuote": true,
   "git.enableSmartCommit": true,
-  "editor.fontSize": 18,
+  "editor.fontSize": 12,
   "tailwindCSS.experimental.configFile": null,
   "tailwindCSS.experimental.classRegex": [
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
@@ -76,8 +76,8 @@
   "explorer.confirmDragAndDrop": false,
   "window.zoomLevel": -1,
   "workbench.colorCustomizations": {
-    "activityBar.background": "#1F1688",
-    "titleBar.activeBackground": "#2C1FBF",
-    "titleBar.activeForeground": "#FCFCFE"
+    "activityBar.background": "#5E0A1E",
+    "titleBar.activeBackground": "#840E29",
+    "titleBar.activeForeground": "#FFFBFC"
   }
 }

@@ -18,7 +18,7 @@ const getEntries = async () => {
 const JournalPage = async () => {
   const entries: JournalEntry[] = await getEntries()
   return (
-    <div>
+    <div className="p-8">
       <h2 className="text-3xl mb-8">Journal</h2>
 
       <div className="grid grid-cols-3 gap-4">

@@ -1,6 +1,5 @@
 'use client'
 import { ReactNode, useReducer } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { UserButton } from '@clerk/nextjs'
 interface DashboardLayoutProps {
   children: ReactNode
@@ -15,13 +14,13 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         {/** Sidebar content*/}
         <nav></nav>
       </aside>
-      <div className="ml-64">
+      <div className="ml-64 h-full">
         <header className="h-[60px] border-b border-theme">
           <div className="h-full w-full px-6 flex items-center justify-end">
             <UserButton />
           </div>
         </header>
-        <div className="journal-wrapper p-8 m-0 text-start">{children}</div>
+        <div className="h-[calc(100vh-60px)] p-8 m-0 text-start">{children}</div>
       </div>
     </div>
   )
