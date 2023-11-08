@@ -1,8 +1,15 @@
 'use client'
-
+import { createNewEntry } from "@/utils/api"
+import { useRouter } from "next/navigation"
 
 const NewEntryCard = () => {
-  const handleOnClick = () => {}
+  // an array of routes derived from the browser. just a stack
+const router = useRouter()
+
+  const handleOnClick = async () => {
+    const res = await createNewEntry()
+    router.push(`/journal/${res.id}`)
+  }
   return (
     <div className="cursor-pointer overflow-hidden rounded-lg card  bg-secondary">
       <div className="p-4 sm:p-6 text-center" onClick={handleOnClick}>
