@@ -1,18 +1,22 @@
-import { ReactNode } from 'react'
+'use client'
+import { ReactNode, useReducer } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { UserButton } from '@clerk/nextjs'
-
 interface DashboardLayoutProps {
   children: ReactNode
 }
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
-    <div className="h-screen w-screen relative">
-      <aside className="absolute w-[200px] top-0 left-0 h-full border-r border-black/10">
-        Mood
+    <div className="h-screen w-screen relative bg-inherit">
+      {/* Sidebar Section */}
+      <aside className="absolute top-0 left-0 w-64 border-r border-theme h-full overflow-auto">
+        Hello
+        {/** Sidebar content*/}
+        <nav></nav>
       </aside>
-      <div className="ml-[200px]">
-        <header className="h-[60px] border-b border-black/10">
+      <div className="ml-64">
+        <header className="h-[60px] border-b border-theme">
           <div className="h-full w-full px-6 flex items-center justify-end">
             <UserButton />
           </div>
