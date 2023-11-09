@@ -31,8 +31,10 @@ model JournalEntry {
 
   content  String    @db.Text // i want my string to be long
   analysis Analysis?
+  // we need to create a compounded unique index with both the userId and id of the entry in order for us to accurarately query the db and safely route to a user's individual entry
+  // @@index([userId])
+  @@unique([userId, id])
 
-  @@index([userId])
 }
 
 model Analysis {
