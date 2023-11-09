@@ -21,7 +21,7 @@ export default async function Home() {
           feelings, behaviors and happiness!
         </p>
         <div>
-          <Link href={href}>
+          <Link href={href} as='script'>
             <button
               type="button"
               className="bg-pink-300 rounded-lg px-4 py-2 text-xl"
