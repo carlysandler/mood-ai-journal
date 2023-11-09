@@ -42,3 +42,7 @@ export interface NewAnalysis {
 export interface Analysis extends NewAnalysis {
   id: string
 }
+
+export interface JournalAPIParams extends Pick<JournalEntry, 'id'> {
+
+}
