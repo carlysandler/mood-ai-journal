@@ -74,10 +74,5 @@
     "*.tsx": "typescriptreact"
   },
   "explorer.confirmDragAndDrop": false,
-  "window.zoomLevel": -1,
-  "workbench.colorCustomizations": {
-    "activityBar.background": "#5E0A1E",
-    "titleBar.activeBackground": "#840E29",
-    "titleBar.activeForeground": "#FFFBFC"
-  }
+  "window.zoomLevel": -1
 }
