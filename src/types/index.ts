@@ -37,6 +37,7 @@ export interface NewAnalysis {
   summary: string
   color: string
   negative: boolean
+  subject: string
 }
 
 export interface Analysis extends NewAnalysis {

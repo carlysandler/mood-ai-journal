@@ -29,7 +29,7 @@
   "vsicons.dontShowNewVersionMessage": true,
   "editor.accessibilitySupport": "off",
   "editor.codeActionsOnSave": {
-    // "source.formatDocument": true,
+    "source.formatDocument": true,
     "source.fixAll.eslint": true
   },
   "eslint.alwaysShowStatus": true,
@@ -47,10 +47,6 @@
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "prettier.configPath": ".prettierrc",
-  "prettier.requireConfig": true,
-  "prettier.semi": false,
-  "prettier.singleQuote": true,
   "git.enableSmartCommit": true,
   "editor.fontSize": 12,
   "tailwindCSS.experimental.configFile": null,
@@ -73,6 +69,6 @@
   "files.associations": {
     "*.tsx": "typescriptreact"
   },
-  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmDragAndDrop": true,
   "window.zoomLevel": -1
 }

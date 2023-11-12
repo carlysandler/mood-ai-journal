@@ -20,7 +20,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             <UserButton />
           </div>
         </header>
-        <div className="h-[calc(100vh-60px)] p-8 m-0 text-start">{children}</div>
+        <div className="h-[calc(100vh-60px)] p-0 m-0 text-start">{children}</div>
       </div>
     </div>
   )
