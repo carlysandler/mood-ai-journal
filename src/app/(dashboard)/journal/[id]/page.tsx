@@ -31,8 +31,11 @@ const EntryPage = async ({ params }: { params: JournalAPIParams }) => {
     subject = ''
   let negative = false
 
+  console.log('entry', entry)
+
   if (entry.analysis) {
     ;({ mood, summary, color, subject, negative } = entry.analysis)
+    console.log('color', color)
   }
   const analysisData = [
     { name: 'Summary', value: summary || '' },

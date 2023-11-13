@@ -18,7 +18,7 @@ export interface NewJournalEntry {
   userId: string
   user?: User
   content: string
-  analysis: Analysis
+  analysis?: Analysis
 }
 
 export interface JournalEntry extends NewJournalEntry {

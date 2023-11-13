@@ -52,10 +52,11 @@ const getPrompt = async (content: string) => {
 
 export const analyzeEntry = async (entry: updatedEntry) => {
   const input = await getPrompt(entry.content)
+  console.log('entry', entry)
 
   const llm = new OpenAI({
-    temperature: 0,
-    modelName: 'gpt-4',
+    temperature: 0.6,
+    modelName: 'gpt-3.5-turbo',
     maxTokens: -1,
   })
 

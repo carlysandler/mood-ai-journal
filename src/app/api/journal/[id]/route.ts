@@ -1,8 +1,8 @@
-import { EntryCard } from '@/components'
 import { JournalAPIParams } from '@/types'
 import { getUserByClerkId, prisma } from '@/utils'
 import { analyzeEntry } from '@/utils/ai'
 import { NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 // next.js using web request standards
 
 export const PATCH = async (
@@ -36,6 +36,8 @@ export const PATCH = async (
       ...analysis!,
     },
   })
+
+  revalidatePath(`/journal/${updatedEntry.id}`)
 
   return NextResponse.json({
     data: { ...updatedEntry, analysis: savedAnalysis },

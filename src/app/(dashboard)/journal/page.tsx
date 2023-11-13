@@ -14,10 +14,7 @@ const getEntries = async () => {
       createdAt: 'desc',
     },
   })
-  const analysis = await analyzeEntry(
-    'Today was a eh, okay day i guess. I was hungover from last night so i had a hard time focusing on work that i had to do before monday.'
-  )
-  console.log(analysis)
+
   return entries
 }
 
