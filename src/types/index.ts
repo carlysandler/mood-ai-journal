@@ -18,12 +18,11 @@ export interface NewJournalEntry {
   userId: string
   user?: User
   content: string
-  // analysis?: IAnalysis
+  analysis: Analysis
 }
 
 export interface JournalEntry extends NewJournalEntry {
   id: string
-  analysis?: Analysis
 }
 
 export interface NewAnalysis {
@@ -32,7 +31,7 @@ export interface NewAnalysis {
   updatedAt: Date
   userId: string
   entryId: string
-  entry: JournalEntry
+  entry?: JournalEntry
   mood: string
   summary: string
   color: string
@@ -44,6 +43,4 @@ export interface Analysis extends NewAnalysis {
   id: string
 }
 
-export interface JournalAPIParams extends Pick<JournalEntry, 'id'> {
-
-}
+export interface JournalAPIParams extends Pick<JournalEntry, 'id'> {}

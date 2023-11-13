@@ -3,6 +3,7 @@ import { StructuredOutputParser } from 'langchain/output_parsers'
 import z from 'zod'
 // Schema to represent a basic prompt for an LLM.
 import { PromptTemplate } from 'langchain/prompts'
+import { JournalEntry } from '@/types'
 // https://js.langchain.com/docs/get_started/quickstart#output-parsers
 // output_parsers convert raw output of LLM into format that can be used downstream.
 
@@ -26,7 +27,13 @@ const parser = StructuredOutputParser.fromZodSchema(
       ),
   })
 )
-
+interface updatedEntry {
+  id: string
+  createdAt: Date
+  updatedAt: Date
+  userId: string
+  content: string
+}
 const getPrompt = async (content: string) => {
   const format_instructions = parser.getFormatInstructions()
   const prompt = new PromptTemplate({
@@ -40,13 +47,11 @@ const getPrompt = async (content: string) => {
     entry: content,
   })
 
-  console.log('input', input, content, typeof content)
-
   return input
 }
 
-export const analyzeEntry = async (content: string) => {
-  const input = await getPrompt(content)
+export const analyzeEntry = async (entry: updatedEntry) => {
+  const input = await getPrompt(entry.content)
 
   const llm = new OpenAI({
     temperature: 0,
