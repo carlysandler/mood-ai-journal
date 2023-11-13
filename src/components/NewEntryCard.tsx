@@ -8,7 +8,6 @@ const NewEntryCard = () => {
 
   const handleOnClick = async () => {
     const res = await createNewEntry()
-    console.log('res', res)
     router.push(`/journal/${res.id}`)
   }
   return (

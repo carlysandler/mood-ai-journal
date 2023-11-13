@@ -11,7 +11,6 @@ export const createNewEntry = async () => {
       body: JSON.stringify({ content: `What's on your mind?` }),
     })
   )
-  console.log('res creaste journal', res)
 
   if (res.ok) {
     const data = await res.json()
