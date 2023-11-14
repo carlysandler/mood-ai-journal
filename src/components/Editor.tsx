@@ -2,12 +2,56 @@
 
 import { JournalEntry } from '@/types'
 import { updatedEntry } from '@/utils/api'
-import { useState } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { useAutosave } from 'react-autosave'
+
+// Import the Slate editor factory.
+import { createEditor, Node } from 'slate'
+// Import the Slate components and React plugin.
+import { Slate, Editable, withReact } from 'slate-react'
+// TypeScript users only add this code
+import { BaseEditor, Descendant } from 'slate'
+import { ReactEditor } from 'slate-react'
+import { HistoryEditor } from 'slate-history'
+
+type ParagraphElement = {
+  type: 'paragraph'
+  children: CustomText[]
+}
+
+type HeadingElement = {
+  type: 'heading'
+  level: number
+  children: CustomText[]
+}
+type CustomElement = ParagraphElement | HeadingElement
+type FormattedText = {
+  text: string
+  bold?: true
+  italicized?: false
+  underlined?: false
+}
+type CustomText = FormattedText
+type CustomEditor = BaseEditor & ReactEditor & HistoryEditor
+declare module 'slate' {
+  interface CustomTypes {
+    Editor: CustomEditor
+    Element: CustomElement
+    Text: CustomText
+  }
+}
+
 const Editor = ({ entry }: { entry: JournalEntry }) => {
+  const [editor] = useState(() => withReact(createEditor()))
   const [value, setValue] = useState(entry.content)
   const [isSaving, setisSaving] = useState(false)
   const [localAnalysis, setLocalAnalysis] = useState(entry.analysis)
+
+  const initialValue: Descendant[] = useMemo(() => {
+    return value
+      ? [{ type: 'paragraph', children: [{ text: value }] }]
+      : [{ type: 'paragraph', children: [{ text: '' }] }]
+  }, [value])
 
   let mood,
     summary,
@@ -33,7 +77,9 @@ const Editor = ({ entry }: { entry: JournalEntry }) => {
     onSave: async (_value) => {
       if (_value === entry.content) return
       setisSaving(true)
-      const data = await updatedEntry(entry.id, { content: _value })
+      const data = await updatedEntry(entry.id, {
+        content: _value,
+      })
       setLocalAnalysis(data.analysis)
       setisSaving(false)
     },
@@ -42,11 +88,27 @@ const Editor = ({ entry }: { entry: JournalEntry }) => {
     <div className='w-full h-full grid grid-cols-3'>
       <div className='col-span-2'>
         {isSaving && <div>...loading</div>}
-        <textarea
+        <Slate
+          editor={editor}
+          initialValue={initialValue}
+          onChange={(e: Descendant[]) => console.log(e)}
+        >
+          <Editable // Define a new handler which prints the key that was pressed.
+            onKeyDown={(event) => {
+              if (event.key === '&') {
+                // Prevent the ampersand character from being inserted.
+                event.preventDefault()
+                // Execute the `insertText` method when the event occurs.
+                editor.insertText('and')
+              }
+            }}
+          />
+        </Slate>
+        {/* <textarea
           className='w-full h-full p-8 text-xl outline-none bg-primary'
           value={value}
           onChange={(e) => setValue(e.target.value)}
-        />
+        /> */}
       </div>
       <div className='border-l border-theme'>
         <header
