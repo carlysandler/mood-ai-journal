@@ -14,33 +14,6 @@ import { BaseEditor, Descendant } from 'slate'
 import { ReactEditor } from 'slate-react'
 import { HistoryEditor } from 'slate-history'
 
-type ParagraphElement = {
-  type: 'paragraph'
-  children: CustomText[]
-}
-
-type HeadingElement = {
-  type: 'heading'
-  level: number
-  children: CustomText[]
-}
-type CustomElement = ParagraphElement | HeadingElement
-type FormattedText = {
-  text: string
-  bold?: true
-  italicized?: false
-  underlined?: false
-}
-type CustomText = FormattedText
-type CustomEditor = BaseEditor & ReactEditor & HistoryEditor
-declare module 'slate' {
-  interface CustomTypes {
-    Editor: CustomEditor
-    Element: CustomElement
-    Text: CustomText
-  }
-}
-
 const Editor = ({ entry }: { entry: JournalEntry }) => {
   const [editor] = useState(() => withReact(createEditor()))
   const [value, setValue] = useState(entry.content)
@@ -91,7 +64,7 @@ const Editor = ({ entry }: { entry: JournalEntry }) => {
         <Slate
           editor={editor}
           initialValue={initialValue}
-          onChange={(e: Descendant[]) => console.log(e)}
+          onChange={(val: Descendant[]) => setValue(val)}
         >
           <Editable // Define a new handler which prints the key that was pressed.
             onKeyDown={(event) => {
