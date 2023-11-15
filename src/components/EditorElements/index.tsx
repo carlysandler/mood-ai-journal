@@ -42,14 +42,14 @@ const ELEMENT_TAGS: ElementMap = {
   },
   h3: {
     key: ['ctrl', '3'],
-    symbol: 'H2',
+    symbol: 'H3',
     component: (props: RenderElementProps) => (
       <HeadingElement headingLevel={3} {...props} />
     ),
   },
   link: {
     key: ['ctrl', 'l'],
-    symbol: 'U+1F517',
+    symbol: '',
     component: LinkElement,
   },
   image: {
@@ -60,25 +60,21 @@ const ELEMENT_TAGS: ElementMap = {
   'list-item': {
     key: [],
     symbol: '',
-    afterClick: undefined,
     component: DefaultElement,
   },
   'bulleted-list': {
     key: [],
     symbol: '',
-    afterClick: undefined,
     component: DefaultElement,
   },
   'numbered-list': {
     key: [],
     symbol: '',
-    afterClick: undefined,
     component: DefaultElement,
   },
   quote: {
     key: [],
     symbol: '',
-    afterClick: undefined,
     component: QuoteElement,
   },
   code: {

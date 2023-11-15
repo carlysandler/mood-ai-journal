@@ -6,17 +6,40 @@ import { useState, useMemo, useCallback } from 'react'
 import { useAutosave } from 'react-autosave'
 
 // Import the Slate editor factory.
-import { createEditor, Node } from 'slate'
 // Import the Slate components and React plugin.
-import { Slate, Editable, withReact } from 'slate-react'
+import {
+  Slate,
+  Editable,
+  withReact,
+  RenderElementProps,
+  RenderLeafProps,
+  DefaultLeaf,
+  ReactEditor,
+} from 'slate-react'
 // TypeScript users only add this code
-import { BaseEditor, Descendant } from 'slate'
-import { ReactEditor } from 'slate-react'
-import { HistoryEditor } from 'slate-history'
+import {
+  Descendant,
+  createEditor,
+  Editor as SlateEditor,
+  Range,
+  Element as SlateElement,
+  Transforms,
+} from 'slate'
+import { withHistory } from 'slate-history'
+import ElementWrapper from './EditorElements/ElementWrapper'
+import EditorUtilButton from './EditorElements/EditorUtilButton'
+import EditorFormatToolbar from './EditorElements/FormatToolbar'
+
+import ELEMENT_TAGS from './EditorElements'
+import MARKUPS from './Markups'
+
+import { isBlockActive, toggleCurrentBlock, toggleMarkup } from '@/utils/editor'
+import { CustomMarkupStrings } from '@/types/slate'
 
 const Editor = ({ entry }: { entry: JournalEntry }) => {
-  const [editor] = useState(() => withReact(createEditor()))
+  const [editor] = useState(() => withHistory(withReact(createEditor())))
   const [value, setValue] = useState(entry.content)
+  // TODO: entry.title, entry.elementType
   const [isSaving, setisSaving] = useState(false)
   const [localAnalysis, setLocalAnalysis] = useState(entry.analysis)
 
@@ -42,6 +65,67 @@ const Editor = ({ entry }: { entry: JournalEntry }) => {
     { name: 'Negative', value: negative ? 'True' : 'False' },
   ]
 
+  const renderElement = useCallback((props: RenderElementProps) => {
+    const Element =
+      props.element.type === undefined
+        ? ELEMENT_TAGS['paragraph'].component
+        : ELEMENT_TAGS[props.element.type].component
+
+    return (
+      <ElementWrapper {...props}>
+        <Element {...props} />
+      </ElementWrapper>
+    )
+  }, [])
+
+  const renderLeaf = useCallback(
+    (props: RenderLeafProps) => {
+      if (props.leaf.placeholder && isBlockActive(editor, 'paragraph')) {
+        return (
+          <div>
+            <span
+              className='pointer-events-none top-0 absolute bg-transparent opacity-30'
+              contentEditable={false}
+            >
+              Press &apos;/&apos; for commands
+            </span>
+            <DefaultLeaf {...props} />
+          </div>
+        )
+      } else {
+        return (
+          <span
+            className={Object.entries(MARKUPS)
+              .map(([key, val]) => {
+                if (props.leaf[key as CustomMarkupStrings]) {
+                  return val.className
+                }
+              })
+              .join(' ')}
+            {...props.attributes}
+          >
+            {props.children}
+          </span>
+        )
+      }
+    },
+    [editor]
+  )
+
+  const serializeContent = (nodes: Descendant[]): string => {
+    return nodes
+      .map((node) => {
+        if (SlateElement.isElement(node)) {
+          return serializeContent(node.children)
+        } else if ('text' in node) {
+          return node.text
+
+          return ''
+        }
+      })
+      .join('\n')
+  }
+
   useAutosave({
     interval: 1900,
     data: value, //watching
@@ -57,6 +141,7 @@ const Editor = ({ entry }: { entry: JournalEntry }) => {
       setisSaving(false)
     },
   })
+
   return (
     <div className='w-full h-full grid grid-cols-3'>
       <div className='col-span-2'>
@@ -64,9 +149,31 @@ const Editor = ({ entry }: { entry: JournalEntry }) => {
         <Slate
           editor={editor}
           initialValue={initialValue}
-          onChange={(val: Descendant[]) => setValue(val)}
+          onChange={(newValue) => setValue(serializeContent(newValue))}
         >
+          <EditorFormatToolbar />
           <Editable // Define a new handler which prints the key that was pressed.
+            autoFocus
+            renderElement={renderElement}
+            renderLeaf={renderLeaf}
+            className='w-full h-full p-8 text-xl outline-none bg-primary'
+            decorate={([node, path]) => {
+              if (
+                editor.selection !== null &&
+                !SlateEditor.isEditor(node) &&
+                SlateEditor.string(editor, [path[0]]) === '' &&
+                Range.includes(editor.selection, path) &&
+                Range.isCollapsed(editor.selection)
+              ) {
+                return [
+                  {
+                    ...editor.selection,
+                    placeholder: true,
+                  },
+                ]
+              }
+              return []
+            }}
             onKeyDown={(event) => {
               if (event.key === '&') {
                 // Prevent the ampersand character from being inserted.

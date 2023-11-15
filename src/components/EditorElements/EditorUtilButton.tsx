@@ -14,7 +14,7 @@ const EditorUtilButton: React.FC<UtilButtonProps> = ({
   return (
     <button
       className={cn(
-        'rounded-md bg-white px-3 py-1 hover:bg-gray-100 disabled:pointer-events-none disabled:text-gray-300',
+        'rounded-md bg-primary px-3 py-1 hover:bg-gray-500 disabled:pointer-events-none disabled:text-gray-600',
         className
       )}
       {...props}

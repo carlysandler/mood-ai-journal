@@ -1,4 +1,4 @@
-import { Editor, Transforms, Text } from 'slate'
+import { Editor, Transforms, Text, Element as SlateElement } from 'slate'
 import {
   CustomElementStrings,
   CustomMarkupStrings,
@@ -7,27 +7,21 @@ import {
 import ELEMENT_TAGS from '@/components/EditorElements'
 
 // Block Elements
-
-export const isBlockActive = (editor: Editor, type: CustomElementStrings) => {
-  console.log('shape of editor', editor)
+export const isBlockActive = (
+  editor: Editor,
+  type: CustomElementStrings
+): boolean => {
   if (!editor.selection) return false
-  // Find nodes in the editor that match the specified type
+
   const [match] = Array.from(
     Editor.nodes(editor, {
-      at: Editor.unhangRange(editor, editor.selection), // Specify the range as the current selection
-      // Match function to determine if the node is of the specified block type
-      match: (n: any) => {
-        // First, ensure that the node is a element and not a Text node or the Editor itself
-        if (!Editor.isBlock(editor, n)) return false
-        // safetly typecase the node to the CustomElement type
-        const element = n as CustomElementType
-
-        return element.type === type
-      },
+      at: Editor.unhangRange(editor, editor.selection),
+      // Ensure that the matched node is an Element and matches the specified type
+      match: (n) =>
+        SlateElement.isElement(n) && (n as CustomElementType).type === type,
     })
   )
 
-  // Return true if there is a match, false othere towise
   return !!match
 }
 
@@ -43,7 +37,11 @@ export const toggleCurrentBlock = (
   Transforms.setNodes(
     editor,
     { type: isBlockActive(editor, type) ? undefined : type },
-    { match: (n: any) => Editor.isBlock(editor, n) } // apply only to blocks
+    {
+      at: editor.selection || undefined,
+      match: (n) => SlateElement.isElement(n),
+      mode: 'highest',
+    } // apply only to blocks
   )
 }
 

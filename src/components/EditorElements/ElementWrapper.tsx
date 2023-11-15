@@ -8,7 +8,6 @@ const ElementWrapper = ({ element, children }: RenderElementProps) => {
   const addElementBelow = () => {
     // Find the path of the current element
     const path = ReactEditor.findPath(editor, element)
-    console.log('shape of path', path)
     // insert a new new after the current node
     Transforms.insertNodes(
       editor,
@@ -19,7 +18,7 @@ const ElementWrapper = ({ element, children }: RenderElementProps) => {
     ReactEditor.focus(editor)
     // Set the selection to the new node
     Transforms.select(editor, {
-      path: [path[0] + 1],
+      path: [path[0] + 1, 0],
       offset: 0,
     })
   }
@@ -54,7 +53,7 @@ const ElementWrapper = ({ element, children }: RenderElementProps) => {
         </EditorUtilButton>
         <EditorUtilButton
           contentEditable={false}
-          title='Click to add element below'
+          title='Click to format'
           onClick={focusCurrentElement}
           tabIndex={-1}
           disabled={Editor.isVoid(editor, element)}
