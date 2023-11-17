@@ -5,11 +5,14 @@ const config: Config = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.css'
+    './src/app/**/*.css',
   ],
   darkMode: 'media',
   theme: {
     extend: {
+      screens: {
+        xs: '475px',
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
@@ -17,17 +20,16 @@ const config: Config = {
       },
       colors: {
         // Define custom color palette
-        'primary': '#f7f7f7',
-        'secondary': '#e2ebf5',
-        'text': '#334155',
+        primary: '#f7f7f7',
+        secondary: '#e2ebf5',
+        text: '#334155',
 
         'dark-primary': '#171523',
         'dark-secondary': '#232131',
         'dark-text': '#cbd5e1',
-
       },
       boxShadow: {
-        'soft': '0 4px 16px rgba(0, 0, 0, 0.1)',
+        soft: '0 4px 16px rgba(0, 0, 0, 0.1)',
         'soft-md': '0 8px 30px rgba(0, 0, 0, 0.1)',
         'soft-lg': '0 10px 40px rgba(0, 0, 0, 0.1)',
       },
@@ -35,11 +37,10 @@ const config: Config = {
     variants: {
       extend: {
         backgroundColor: ['dark'],
-        textColor: ['dark']
-
-      }
+        textColor: ['dark'],
+      },
     },
     plugins: [],
-  }
+  },
 }
 export default config
