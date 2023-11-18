@@ -20,6 +20,10 @@ export const useResponsiveness = () => {
     }
   }, [])
 
+  const smOrXsContainerSize = useCallback((size: string) => {
+    return size === 'sm' || size === 'xs'
+  }, [])
+
   const scrollToBottom = (id: string) => {
     const element = document.getElementById(id)
     if (element) {
@@ -31,5 +35,6 @@ export const useResponsiveness = () => {
   return {
     getContainerSize,
     scrollToBottom,
+    smOrXsContainerSize,
   }
 }
